@@ -19,11 +19,8 @@ class PokemonRepository implements IPokemonRepository {
     );
   
     if (response.statusCode == 200) {
-      PokemonModel pokemon = {} as PokemonModel;
-
       final body = jsonDecode(response.body);
-
-      pokemon = PokemonModel.fromMap(body);
+      PokemonModel pokemon = PokemonModel.fromMap(body);
 
       return pokemon;
     } else if (response.statusCode == 404) {

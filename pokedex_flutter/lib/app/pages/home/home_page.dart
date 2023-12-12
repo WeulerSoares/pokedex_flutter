@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 ClipRRect(
                   child: Image.network(
-                    item.sprites[0],
+                    item!.sprites.values.firstOrNull,
                     fit: BoxFit.cover,
                   ),
                 ),

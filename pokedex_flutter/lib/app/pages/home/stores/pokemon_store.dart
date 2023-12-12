@@ -7,7 +7,7 @@ class PokemonStore {
   final IPokemonRepository repository;
 
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
-  final ValueNotifier<PokemonModel> state = ValueNotifier<PokemonModel>({} as PokemonModel);
+  final ValueNotifier<PokemonModel?> state = ValueNotifier<PokemonModel?>(null);
   final ValueNotifier<String> erro = ValueNotifier<String>('');
 
   PokemonStore({required this.repository});

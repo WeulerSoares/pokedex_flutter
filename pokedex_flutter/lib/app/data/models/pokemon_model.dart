@@ -3,7 +3,7 @@ class PokemonModel {
   final String name;
   final double height;
   final double weight;
-  final List<String> sprites;
+  final Map<String, dynamic> sprites;
 
   PokemonModel({
     required this.id,
@@ -17,9 +17,9 @@ class PokemonModel {
     return PokemonModel(
       id: map['id'],
       name: map['name'],
-      height: map['height'],
-      weight: map['weight'],
-      sprites: List<String>.from(['sprites']),
+      height: map['height'] * 1.0,
+      weight: map['weight'] * 1.0,
+      sprites: Map<String, dynamic>.from(map['sprites'] ?? {}),
     );
   }
 }
