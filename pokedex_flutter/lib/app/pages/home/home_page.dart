@@ -3,6 +3,7 @@ import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/app/data/http/http_client.dart';
 import 'package:pokedex_flutter/app/data/models/repositories/pokemon_repository.dart';
+import 'package:pokedex_flutter/app/pages/Profile/profile_page.dart';
 import 'package:pokedex_flutter/app/pages/home/stores/pokemon_store.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,6 +38,46 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu Lateral',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Página Inicial'),
+              onTap: () {
+                // Implemente a lógica da página principal aqui
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Perfil'),
+              onTap: () {
+                Navigator.pop(context); // Fecha o menu lateral
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       body: AnimatedBuilder(
