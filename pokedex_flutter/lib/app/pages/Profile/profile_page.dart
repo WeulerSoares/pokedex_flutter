@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/app/data/models/profile_model.dart';
 
@@ -7,6 +8,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  
   final List<ProfileModel> profiles = [];
 
   final _formKey = GlobalKey<FormState>();
@@ -40,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
             gender: Gender.male,
           ),
         );
+        db.collection("Trainer").doc("Trainer").set({"name": _nameController.text});
         _nameController.clear();
         _birthDateController.clear();
         _genderController.clear();
