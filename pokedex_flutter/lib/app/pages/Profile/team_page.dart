@@ -25,6 +25,20 @@ class _TeamPageState extends State<TeamPage> {
     _pokemonData = _getPokemonData();
   }
 
+  void releasePokemon(Pokemon pokemon) async {
+    try {
+      DocumentReference pokemonRef =
+          db.collection('Pokemons').doc(pokemon.name);
+      await pokemonRef.delete();
+
+      setState(() {
+        _pokemonData = _getPokemonData();
+      });
+    } catch (e) {
+      print('Erro ao deletar dados do Firestore: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +72,13 @@ class _TeamPageState extends State<TeamPage> {
                     final int index = entry.key;
                     final Pokemon pokemon = entry.value;
                     return Container(
-                      height: 120.0,
                       margin: EdgeInsets.only(
                           bottom:
                               index == snapshot.data!.length - 1 ? 0.0 : 8.0),
-                      child: PokemonCard(pokemon: pokemon),
+                      child: PokemonCard(
+                        pokemon: pokemon,
+                        onRelease: () => releasePokemon(pokemon),
+                      ),
                     );
                   }).toList(),
                 ),
@@ -77,12 +93,9 @@ class _TeamPageState extends State<TeamPage> {
 
 Future<List<Pokemon>> _getPokemonData() async {
   try {
-    print('Iniciando recuperação de dados do Firestore...');
     // Substitua '/Pokemons' pelo caminho específico do seu banco de dados Firebase
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('Pokemons').get();
-
-    print('Dados do Firestore obtidos com sucesso.');
 
     List<Pokemon> pokemonList =
         snapshot.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
@@ -96,8 +109,6 @@ Future<List<Pokemon>> _getPokemonData() async {
         imageUrl: data['imageUrl'] ?? '',
       );
     }).toList();
-
-    print('Lista de Pokémon criada com ${pokemonList.length} itens.');
 
     return pokemonList;
   } catch (e) {
@@ -125,14 +136,15 @@ class Pokemon {
 
 class PokemonCard extends StatelessWidget {
   final Pokemon pokemon;
+  final VoidCallback onRelease;
 
-  PokemonCard({required this.pokemon});
+  PokemonCard({required this.pokemon, required this.onRelease});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: Colors.white,
+      color: Colors.white, // Altere para a cor desejada
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -161,6 +173,22 @@ class PokemonCard extends StatelessWidget {
                   Text(
                     'Tipo: ${pokemon.type}',
                     style: TextStyle(fontSize: 14.0),
+                  ),
+                  SizedBox(height: 8.0),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: onRelease,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                      ),
+                      child: Text(
+                        'Liberar',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
