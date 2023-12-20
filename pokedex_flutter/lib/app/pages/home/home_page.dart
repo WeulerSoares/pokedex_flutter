@@ -1,9 +1,8 @@
-import 'dart:js_interop';
-
+// import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/app/data/http/http_client.dart';
 import 'package:pokedex_flutter/app/data/models/repositories/pokemon_repository.dart';
-import 'package:pokedex_flutter/app/pages/Profile/profile_page.dart';
+import 'package:pokedex_flutter/app/pages/Profile/team_page.dart';
 import 'package:pokedex_flutter/app/pages/home/stores/pokemon_store.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final PokemonStore store = PokemonStore(
     repository: PokemonRepository(
       client: HttpClient(),
@@ -24,9 +22,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    store.getPokemon('1');
+    store.getPokemon('25');
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
+                    builder: (context) => TeamPage(),
                   ),
                 );
               },
@@ -105,26 +103,27 @@ class _HomePageState extends State<HomePage> {
             );
           }
 
-          if (store.state.value.isNull) {
-            return const Center(
-              child: Text(
-                'Nenhum pokemon encontrado',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            );
-          } else {
+          // if (store.state.value.isUndefined) {
+          //   return const Center(
+          //     child: Text(
+          //       'Nenhum pokemon encontrado',
+          //       style: TextStyle(
+          //         color: Colors.black54,
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: 20,
+          //       ),
+          //       textAlign: TextAlign.center,
+          //     ),
+          //   );
+          // }
+          else {
             final item = store.state.value;
 
             return Column(
               children: [
                 ClipRRect(
                   child: Image.network(
-                    item!.sprites.values.firstOrNull,
+                    item!.sprites.values.elementAt(4),
                     fit: BoxFit.cover,
                   ),
                 ),
